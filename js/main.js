@@ -4,6 +4,7 @@ let page = 1;
 let lookingForData = false;
 let catLink = "http://scaredmonkey.dk/cms/wp/wp-json/wp/v2/categories";
 const aside = document.querySelector('aside');
+const mytimer = setInterval(myTimer, 5000);
 
 
 function fetchData() {
@@ -97,3 +98,9 @@ document.querySelector(".burger").addEventListener('click', trae_menu);
 function trae_menu() {
     document.querySelector("aside").classList.toggle("traeMenu");
 }
+
+function myTimer() {
+    document.querySelector(".loader").style.display = "none";
+}
+
+
