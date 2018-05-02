@@ -35,13 +35,14 @@ function showEvent(anEvent) {
         clone.querySelector(".time").textContent = "Time: " + time.substring(0,2) + ":" + time.substring(2,4);
         clone.querySelector("img").setAttribute("src", anEvent._embedded["wp:featuredmedia"][0].media_details.sizes.medium.source_url);
         clone.querySelector('.readmore').href = "subpage.html?id=" + anEvent.id;
+        console.log(anEvent.acf.event_type);
+        clone.querySelector(".event").classList.add(anEvent.acf.event_type);
         eventlist.appendChild(clone);
     } else {
 
     }
 
 }
-
 
 fetchData();
 
