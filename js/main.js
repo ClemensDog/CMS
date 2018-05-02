@@ -29,17 +29,19 @@ function showEvent(anEvent) {
         clone.querySelector(".category").textContent = anEvent.acf.event_type;
         clone.querySelector(".venue").textContent = "Location: " + anEvent.acf.location;
         clone.querySelector(".date").textContent = "Date: " + anEvent.acf.date;
-        clone.querySelector(".time").textContent = "Time: " + anEvent.acf.time;
+        let date = anEvent.acf.date
+        clone.querySelector(".date").textContent = "Date: " + date.substring(0,4) + "/" + date.substring(4,6) + "/" + date.substring(6,8);
+        let time = anEvent.acf.time;
+        clone.querySelector(".time").textContent = "Time: " + time.substring(0,2) + ":" + time.substring(2,4);
         clone.querySelector("img").setAttribute("src", anEvent._embedded["wp:featuredmedia"][0].media_details.sizes.medium.source_url);
         clone.querySelector('.readmore').href = "subpage.html?id=" + anEvent.id;
-        console.log(anEvent.acf.event_type);
-        clone.querySelector(".event").classList.add(anEvent.acf.event_type);
         eventlist.appendChild(clone);
     } else {
 
     }
 
 }
+
 
 fetchData();
 
