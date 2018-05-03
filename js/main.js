@@ -4,11 +4,12 @@ let page = 1;
 let lookingForData = false;
 let catLink = "http://scaredmonkey.dk/cms/wp/wp-json/wp/v2/categories";
 const aside = document.querySelector('aside');
+const mytimer = setInterval(myTimer, 5000);
 
 
 function fetchData() {
     lookingForData = true;
-    fetch("http://scaredmonkey.dk/cms/wp/wp-json/wp/v2/events?_embed&per_page=2&page=" + page + "&catagories=" + catLink)
+    fetch("http://scaredmonkey.dk/cms/wp/wp-json/wp/v2/events?_embed&per_page=75&page=" + page)
         .then(e => e.json())
         .then(showContent)
 }
@@ -20,7 +21,7 @@ function showContent(data) {
 }
 
 function showEvent(anEvent) {
-    if (anEvent._embedded.author[0].name === "smp") {
+    if (anEvent._embedded.author[0].name === "ClemensMMD") {
         //console.log(anEvent._embedded["wp:featuredmedia"][0].media_details.sizes.medium.source_url);
         let clone = template.cloneNode(true);
         clone.querySelector("h1").textContent = anEvent.title.rendered;
@@ -28,9 +29,14 @@ function showEvent(anEvent) {
         clone.querySelector(".category").textContent = anEvent.acf.event_type;
         clone.querySelector(".venue").textContent = "Location: " + anEvent.acf.location;
         clone.querySelector(".date").textContent = "Date: " + anEvent.acf.date;
-        clone.querySelector(".time").textContent = "Time: " + anEvent.acf.time;
+        let date = anEvent.acf.date
+        clone.querySelector(".date").textContent = "Date: " + date.substring(0,4) + "/" + date.substring(4,6) + "/" + date.substring(6,8);
+        let time = anEvent.acf.time;
+        clone.querySelector(".time").textContent = "Time: " + time.substring(0,2) + ":" + time.substring(2,4);
         clone.querySelector("img").setAttribute("src", anEvent._embedded["wp:featuredmedia"][0].media_details.sizes.medium.source_url);
-        clone.querySelector('.readmore').href="subpage.html?id=" + anEvent.id;
+        clone.querySelector('.readmore').href = "subpage.html?id=" + anEvent.id;
+        console.log(anEvent.acf.event_type);
+        clone.querySelector(".event").classList.add(anEvent.acf.event_type);
         eventlist.appendChild(clone);
     } else {
 
@@ -58,7 +64,8 @@ function bottomVisible() {
 }
 
 fetch(catLink).then(result => result.json()).then(cats => sort(cats));
-function sort(cats){
+
+function sort(cats) {
     cats.forEach(cat => {
         const a = document.createElement("a");
         a.href = "#";
@@ -68,9 +75,18 @@ function sort(cats){
         aside.appendChild(a);
     })
 }
+
 function filter(category) {
-    console.log(category);
-    document.querySelectorAll("article").forEach(section => {console.log(section)})
+
+    document.querySelectorAll(".event").forEach(el => {
+        el.classList.add("hidden");
+        if (el.classList.contains(category.slug)) {
+            console.log("i have a class called " + category.slug)
+            el.classList.remove("hidden")
+        } else {
+            console.log("i DONT have a class called " + category.slug)
+        }
+    })
 
 }
 
@@ -81,6 +97,13 @@ function burger(x) {
 
 
 document.querySelector(".burger").addEventListener('click', trae_menu);
-function trae_menu(){
+
+function trae_menu() {
     document.querySelector("aside").classList.toggle("traeMenu");
 }
+
+function myTimer() {
+    document.querySelector(".loader").style.display = "none";
+}
+
+
