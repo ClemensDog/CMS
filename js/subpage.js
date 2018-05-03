@@ -14,7 +14,7 @@ function showSinglePost(anEvent) {
     clone.querySelector(".price span").textContent = anEvent.acf.price;
     clone.querySelector(".category").textContent = anEvent.acf.event_type;
     clone.querySelector(".venue").textContent = "Location: " + anEvent.acf.location;
-    clone.querySelector(".date").textContent = "Date: " + anEvent.acf.date;
+
     clone.querySelector(".time").textContent = "Time: " + anEvent.acf.time;
     eventlist.appendChild(clone);
 
